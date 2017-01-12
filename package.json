@@ -1,0 +1,23 @@
+{
+  "name": "bkmap-api",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laurentChin/bkmap-api.git"
+  },
+  "keywords": [
+    "beacon",
+    "localization"
+  ],
+  "author": "Laurent Janet <laurent.janet@backelite.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/laurentChin/bkmap-api/issues"
+  },
+  "homepage": "https://github.com/laurentChin/bkmap-api#readme"
+}
