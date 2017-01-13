@@ -21,6 +21,15 @@ app.get('/beacons', function(request, response) {
   });
 });
 
+app.get('/beacons/:id', function(request, response){
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('beacons')
+      .findOne({ uuid: request.params.id }, function(error, result){
+        response.status(200).send(result);
+      })
+  });
+});
+
 /**
  * Beacon creation
  * {
