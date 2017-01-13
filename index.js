@@ -63,4 +63,31 @@ app.post('/beacons', function (request, response) {
   });
 });
 
+/**
+ * Laptop creation
+ * {
+ *  id: string,
+ *  user: integer
+ * }
+ *
+ */
+app.post('/laptops', function(request, response){
+  const laptop = request.body;
+
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('laptops')
+      .insertOne(
+        laptop,
+        (error, result) => {
+          if (error) {
+            response.status(400).send({ err });
+          } else {
+            response.status(201).send(result);
+            db.close();
+          }
+        }
+      );
+  });
+});
+
 app.listen(3000);
