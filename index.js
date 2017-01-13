@@ -167,4 +167,23 @@ app.get('/laptops/:id', function(request, response) {
   });
 });
 
+app.post('/rooms', function (request, response) {
+  const room = request.body;
+
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('rooms')
+      .insertOne(
+        room,
+        (error, result) => {
+          if (error) {
+            response.status(400).send({ err });
+          } else {
+            response.status(201).send(result);
+            db.close();
+          }
+        }
+      );
+  });
+});
+
 app.listen(3000);
