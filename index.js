@@ -132,9 +132,20 @@ app.post('/laptops/:id/beacons', function(request, response){
 });
 
 app.get('/laptops', function(request, response) {
+  let criteria = {};
+
+  if(request.query.beacons) {
+    let beacons = request.query.beacons;
+    criteria.$and = [];
+
+    beacons.forEach((beacon) => {
+      criteria.$and.push({ "beacons.uuid": beacon });
+    });
+  }
+
   mongoClient.connect(mongoDbPath, (err, db) => {
     db.collection('laptops')
-      .find()
+      .find(criteria)
       .toArray()
       .then((results) => {
         db.close();
