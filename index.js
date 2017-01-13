@@ -73,6 +73,8 @@ app.post('/beacons', function (request, response) {
  */
 app.post('/laptops', function(request, response){
   const laptop = request.body;
+  laptop.id = laptop.id.toLowerCase();
+  laptop.beacons = [];
 
   mongoClient.connect(mongoDbPath, (err, db) => {
     db.collection('laptops')
@@ -85,6 +87,39 @@ app.post('/laptops', function(request, response){
             response.status(201).send(result);
             db.close();
           }
+        }
+      );
+  });
+});
+
+app.post('/laptops/:id/beacons', function(request, response){
+  let rawBeacons = request.body;
+  console.log(rawBeacons);
+  let beacons = [];
+
+  rawBeacons.forEach(beacon => {
+    beacons.push({
+      "uuid": beacon.uuid,
+      "major": beacon.major,
+      "minor": beacon.minor,
+      "distance": beacon.distance,
+    });
+  });
+
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('laptops')
+      .updateOne(
+        { "id": request.params.id },
+        {
+          $set: { "beacons": beacons }
+        }, function(error, result) {
+          console.log(` `);
+          console.log(`----- Beacons updated for ${request.params.id} -----`);
+          console.log(rawBeacons);
+          console.log(`----- End of beacons update for ${request.params.id} -----`);
+          console.log(` `);
+          response.status(201).send(result);
+          db.close();
         }
       );
   });
