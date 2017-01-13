@@ -138,4 +138,17 @@ app.get('/laptops', function(request, response) {
   });
 });
 
+app.get('/laptops/:id', function(request, response) {
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('laptops')
+      .findOne({ id: request.params.id }, function(error, result){
+        if(result) {
+          response.status(200).send(result);
+        } else {
+          response.status(404).send(`${request.params.id} not found`);
+        }
+      })
+  });
+});
+
 app.listen(3000);
