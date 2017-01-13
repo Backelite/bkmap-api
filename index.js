@@ -47,6 +47,7 @@ app.get('/beacons/:id', function(request, response){
  */
 app.post('/beacons', function (request, response) {
   const beacon = request.body;
+  beacon.uuid = `${beacon.uuid}-${beacon.major}-${beacon.minor}`;
 
   mongoClient.connect(mongoDbPath, (err, db) => {
     db.collection('beacons')
@@ -103,7 +104,7 @@ app.post('/laptops/:id/beacons', function(request, response){
   } else {
     rawBeacons.forEach(beacon => {
       beacons.push({
-        "uuid": beacon.uuid,
+        "uuid": `${beacon.uuid}-${beacon.major}-${beacon.minor}`,
         "major": beacon.major,
         "minor": beacon.minor,
         "distance": beacon.distance,
