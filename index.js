@@ -10,6 +10,17 @@ app.get('/', function (request, response){
   response.send('bkmap');
 });
 
+app.get('/beacons', function(request, response) {
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('beacons')
+      .find()
+      .toArray()
+      .then((results) => {
+        response.status(200).send(results);
+      });
+  });
+});
+
 /**
  * Beacon creation
  * {
