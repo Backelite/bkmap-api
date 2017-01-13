@@ -16,6 +16,7 @@ app.get('/beacons', function(request, response) {
       .find()
       .toArray()
       .then((results) => {
+        db.close();
         response.status(200).send(results);
       });
   });
