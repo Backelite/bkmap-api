@@ -98,32 +98,36 @@ app.post('/laptops/:id/beacons', function(request, response){
   console.log(rawBeacons);
   let beacons = [];
 
-  rawBeacons.forEach(beacon => {
-    beacons.push({
-      "uuid": beacon.uuid,
-      "major": beacon.major,
-      "minor": beacon.minor,
-      "distance": beacon.distance,
+  if(rawBeacons.length === 0) {
+    response.status(200).send('No beacons provided');
+  } else {
+    rawBeacons.forEach(beacon => {
+      beacons.push({
+        "uuid": beacon.uuid,
+        "major": beacon.major,
+        "minor": beacon.minor,
+        "distance": beacon.distance,
+      });
     });
-  });
 
-  mongoClient.connect(mongoDbPath, (err, db) => {
-    db.collection('laptops')
-      .updateOne(
-        { "id": request.params.id },
-        {
-          $set: { "beacons": beacons }
-        }, function(error, result) {
-          console.log(` `);
-          console.log(`----- Beacons updated for ${request.params.id} -----`);
-          console.log(rawBeacons);
-          console.log(`----- End of beacons update for ${request.params.id} -----`);
-          console.log(` `);
-          response.status(201).send(result);
-          db.close();
-        }
-      );
-  });
+    mongoClient.connect(mongoDbPath, (err, db) => {
+      db.collection('laptops')
+        .updateOne(
+          { "id": request.params.id },
+          {
+            $set: { "beacons": beacons }
+          }, function(error, result) {
+            console.log(` `);
+            console.log(`----- Beacons updated for ${request.params.id} -----`);
+            console.log(rawBeacons);
+            console.log(`----- End of beacons update for ${request.params.id} -----`);
+            console.log(` `);
+            response.status(201).send(result);
+            db.close();
+          }
+        );
+    });
+  }
 });
 
 app.get('/laptops', function(request, response) {
