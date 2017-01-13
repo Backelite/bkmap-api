@@ -126,4 +126,16 @@ app.post('/laptops/:id/beacons', function(request, response){
   });
 });
 
+app.get('/laptops', function(request, response) {
+  mongoClient.connect(mongoDbPath, (err, db) => {
+    db.collection('laptops')
+      .find()
+      .toArray()
+      .then((results) => {
+        db.close();
+        response.status(200).send(results);
+      });
+  });
+});
+
 app.listen(3000);
