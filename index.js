@@ -3,7 +3,9 @@ const app = express();
 const mongoClient = require('mongodb').MongoClient;
 const mongoDbPath = 'mongodb://localhost:27017/bkmap';
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', function (request, response){
